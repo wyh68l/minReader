@@ -3,14 +3,38 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "uni-app"
+				"navigationBarTitleText": "书架"
+			}
+		},
+		{
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": ""
 			}
 		}
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "",
+		"navigationBarBackgroundColor": "#add5a2",
 		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#515151",
+		"selectedColor": "#707070",
+		"borderStyle": "white",
+		"backgroundColor": "#add5a2",
+		"height":"60px",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/image/books.png",
+			"selectedIconPath": "static/image/books2.png",
+			"text": "书架"
+		}, {
+			"pagePath": "pages/my/index",
+			"iconPath": "static/image/my.png",
+			"selectedIconPath": "static/image/my2.png",
+			"text": "我的"
+		}]
 	}
 }
