@@ -1,69 +1,77 @@
 <template>
-  <view class="content">
-
+  <view class="content" :style="{'height':'85vh'}">
+    <view class="boolList">
+      <template v-if="state.bookList.length">
+        <view class="book-item" v-for="(item,index) in state.bookList" :key="index" @tap="goReadBook(item.bookName)">
+          <view class="img"></view>
+          <view class="name">{{item.bookName}}</view>
+        </view>
+      </template>
+      <view v-else class="nomore">
+        暂无更多噢,快去添加吧~
+      </view>
+    </view>
   </view>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
 // import {getDemo} from '@/serves/main'
-import { ref, reactive, toRefs, computed, Ref, watchEffect,onMounted } from "vue";
-export default {
-	setup() {
-		// const count: Ref<number> = ref(0);
-		const state = reactive({
-			title: 'Hello',
-			animate:false
-    });
+import { ref, reactive, toRefs, computed, Ref, watchEffect,onMounted,getCurrentInstance } from "vue";
+import mixins from '@/common/js/mixin.ts'
 
-		onMounted(() => {
-			// getResult()
-		})
+const state = reactive({
+	animate:false,
+	bookList:[]
+});
 
-		const getResult = ()=>{
-			getDemo('mock/userInfo').then(res=>{
+onMounted(() => {
+	getRulesList()
+})
 
-				if(res.code === 200){
-					console.log(res.data);
-				}else{
-					wx.showToast({
-						title: '诶呀,好疼',
-						icon: 'none',
-						duration: 2000
-					})
-				}
-			})
-		}
-
-		return { getResult, ...toRefs(state),};
-	},
+const getRulesList = ()=>{
+	state.bookList = JSON.parse(uni.getStorageSync('downBookData') || '[]')
+}
+const goReadBook = (bookName)=>{
+	uni.navigateTo({url:'../readBookPage/readBookPage?bookName='+bookName})
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20rpx;
-}
-
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin-top: 200rpx;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 50rpx;
-}
-
-.text-area {
-  display: flex;
-  justify-content: center;
+  padding: 20px;
+  .boolList{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    .book-item{
+      width: 30%;
+      margin-right: 5%;
+      margin-bottom: 30rpx;
+      text-align: center;
+      .img{
+        height: 160px;
+        background-color: #e3e3e3;
+        margin-bottom: 10rpx;
+      }
+      .name{
+        color: #333;
+        font-size: 24rpx;
+      }
+      &:nth-of-type(3n+3){
+        margin-right: 0;
+      }
+    }
+  }
 }
 
 .title {
   font-size: 36rpx;
   color: $uni-color-warning;
+}
+.nomore{
+  text-align: center;
+  margin: 100rpx auto;
+  font-size: 26rpx;
+  color: #666;
 }
 </style>

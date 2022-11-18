@@ -1,4 +1,4 @@
-import {fetch} from './serves'
+import {fetch} from './serversWechart.js'
 
 //demo接口
 export function getDemo(url) {
@@ -6,4 +6,12 @@ export function getDemo(url) {
         url,
         method:'get'
     })
+}
+//自定义请求接口
+export function sendCustomReq(url,method = 'get',baseURL = '') {
+	return fetch({
+		url,
+		method,
+		baseURL
+	})
 }

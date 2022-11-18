@@ -6,19 +6,19 @@ export default defineConfig({
   plugins: [
     uni(),
   ],
-	// resolve:{
-	// 	//设置路径别名
-	// 	alias: {
-	// 		'@': path.resolve(__dirname, './src'),
-	// 	},
-	// },
-	// server: {
-	// 	proxy: {
-	// 		"/mock": {
-	// 			target: "https://getman.cn/",
-	// 			changeOrigin: true,
-	// 			// rewrite: (path) => path.replace(/^\/api/, ""),
-	// 		},
-	// 	},
-	// },
+	resolve:{
+		//设置路径别名
+		alias: {
+			'@': path.resolve(__dirname, './src'),
+		},
+	},
+	server: {
+		proxy: {
+			"/api": {
+				target: "https://www.biqudu.net",
+				changeOrigin: true,
+				// rewrite: (path) => path.replace(/^\/api/, ""),
+			},
+		},
+	},
 })

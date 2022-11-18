@@ -1,69 +1,61 @@
 <template>
   <view class="content">
-
+    <view class="toolList">
+      <van-cell v-for="(item,index) in state.toolList" :key="index" class="list-item" @tap="goPage(item)" :title="item.name" is-link />
+    </view>
   </view>
 </template>
 
-<script lang="ts">
-// import {getDemo} from '@/serves/main'
-import { ref, reactive, toRefs, computed, Ref, watchEffect,onMounted } from "vue";
-export default {
-	setup() {
-		// const count: Ref<number> = ref(0);
-		const state = reactive({
-			title: 'Hello',
-			animate:false
-    });
+<script lang="ts" setup>
+	// import {getDemo} from '@/serves/main'
+	import { ref, reactive, toRefs, computed, Ref, watchEffect,onMounted } from "vue";
+	// const count: Ref<number> = ref(0);
+	const state = reactive({
+		title: 'Hello',
+		animate:false,
+		toolList:[
+			{name:'配置规则',url:'../rulesPage/index'},
+			{name:'添加书籍',url:'../addBooks/index'},
+			{name:'规则列表',url:'../rulesList/index'},
+			{name:'我的书籍',url:'../booksList/index'},
+      {name:'设置',url:''}
+			]
+	})
 
-		onMounted(() => {
-			// getResult()
+	onMounted(() => {
+		// getResult()
+	})
+
+	const getResult = ()=>{
+		getDemo('mock/userInfo').then(res=>{
+
+			if(res.code === 200){
+				console.log(res.data);
+			}else{
+				wx.showToast({
+					title: '诶呀,好疼',
+					icon: 'none',
+					duration: 2000
+				})
+			}
 		})
+	}
 
-		const getResult = ()=>{
-			getDemo('mock/userInfo').then(res=>{
+	const goPage = (e)=>{
+		uni.navigateTo({url:e.url})
+	}
 
-				if(res.code === 200){
-					console.log(res.data);
-				}else{
-					wx.showToast({
-						title: '诶呀,好疼',
-						icon: 'none',
-						duration: 2000
-					})
-				}
-			})
-		}
-
-		return { getResult, ...toRefs(state),};
-	},
-}
 </script>
 
-<style lang="scss">
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 20rpx;
-}
-
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin-top: 200rpx;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 50rpx;
-}
-
-.text-area {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  font-size: 36rpx;
-  color: $uni-color-warning;
-}
+<style lang="scss" scoped>
+  .content {
+    .toolList{
+      background-color: #fff;
+      .list-item{
+        height: 90rpx;
+        font-size: 24rpx;
+        color: #333;
+      }
+    }
+  }
 </style>

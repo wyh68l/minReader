@@ -15,7 +15,7 @@ import axios from 'axios'
 const Axios = axios.create({
   timeout: 10000,
   responseType: 'json',
-	baseURL: 'https://getman.cn',
+	baseURL: 'https://www.biqudu.net',
 })
 
 // axios.defaults.timeout = 30000
@@ -27,11 +27,11 @@ Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 Axios.defaults.adapter = function (config) {
 // let baseURL = process.env.BASE_API
 // 发交易之前显示加载中
-  wx.showLoading({
+  uni.showLoading({
     title: '拼命加载中...'
   })
   return new Promise((resolve, reject) => {
-    wx.request({
+    uni.request({
       url: config.url,
       method: config.method,
       data: config.params,
@@ -95,11 +95,11 @@ function fetch (options) {
   return new Promise((resolve, reject) => {
     Axios(options)
       .then(response => {
-        wx.hideLoading();
+        uni.hideLoading();
         resolve(response.data)
       })
       .catch(error => {
-        wx.showToast({
+        uni.showToast({
             title: '诶呀,好疼',
             icon: 'none',
             duration: 2000
