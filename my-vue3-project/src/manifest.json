@@ -1,5 +1,5 @@
 {
-    "name" : "阅读器",
+    "name" : "巨弯巨快",
     "appid" : "__UNI__6066E71",
     "description" : "",
     "versionName" : "1.0.0",
@@ -54,7 +54,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wxb40b9e8b41b1c907",
+        "appid" : "wx432d94775b992a5d",
         "setting" : {
             "urlCheck" : false
         },

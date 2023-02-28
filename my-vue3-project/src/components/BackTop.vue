@@ -1,8 +1,8 @@
 <template>
   <div class="box">
-      <div class="backTop animated" :class="isShow?'fadeInUp':'fadeOutDown'" @click="backTop">
-          <span class="iconfont iconshangla"></span>
-      </div>
+      <div class="backTop" @click="backTop"><span class="iconfont iconshangla"></span></div>
+      <div class="backTop" @click="backBottom" style="transform: rotateX(180deg)"><span class="iconfont iconshangla"></span></div>
+
       <div class="backLeft animated" :class="isShow?'fadeInUp':'fadeOutDown'" @click="backLeft">
           <span class="iconfont iconfanhui1"></span>
       </div>
@@ -30,9 +30,16 @@
             backTop(){
                 uni.pageScrollTo({
                     scrollTop: 0,
-                    duration: 100
+                    duration: 50
                 });
-                this.$emit('backTop')
+                this.$emit('pageReduce')
+            },
+            backBottom(){
+	            uni.pageScrollTo({
+		            scrollTop: 0,
+		            duration: 50
+	            });
+	            this.$emit('pageAdd')
             },
             backLeft(){
                 //#ifdef MP-WEIXIN
@@ -58,20 +65,20 @@
     .box{
         position: fixed;
         width: 100upx;
-        right: 20upx;
-        bottom: 200upx;
+        right: 0upx;
+        bottom: 150upx;
         z-index: 999;
         .backTop,.backLeft{
-            width: 100upx;
-            height: 100upx;
+            width: 75upx;
+            height: 75upx;
             border-radius: 50%;
-            line-height: 100upx;
+            line-height: 75upx;
             text-align: center;
-            background-color: #faaca8;
+            background-color: #add5a2;
             margin-bottom: 30upx;
 
             span{
-                font-size: 60upx;
+                font-size: 40upx;
                 color: #fff;
             }
         }

@@ -94,7 +94,8 @@
 		downBookData:{
 			catalog:[],
 			bookContent:[],
-			bookName:''
+			bookName:'',
+			currentPage:1
 		}
 	})
 	const formData = reactive({
@@ -106,6 +107,7 @@
 	const route = useRoute()
 
 	onLoad(options => {
+		console.log(666)
 		initFormData(options);
 	})
 
@@ -123,7 +125,10 @@
 			state.name = options.name
 			Object.assign(formData,state.booksList.find(item=>item.name === state.name))
 			let value = state.booksList.findIndex(item=>item.name === state.name)
+			console.log(55555)
 			onConfirm({detail:{value}})
+		}else {
+			onConfirm({detail:{value:0}})
 		}
 	}
 	const changeBook = (e)=>{
@@ -163,32 +168,71 @@
 
 	//获取小说内容
 	const onSubmit = (url,type)=>{
-		return new Promise((resolve,reject)=>{
-			sendCustomReq(`${url}`).then(res=>{
-				if(res){
-					if(type === 'catalog'){
-						state.downBookData.bookName = formData.name
-						matchCatalog(res)
-						resolve && resolve()
-					}else {
-						resolve && resolve(res)
-					}
-				}else{
-					reject && reject(false)
-					wx.showToast({
-						title: '诶呀,好疼',
-						icon: 'none',
-						duration: 2000
-					})
+		// return new Promise((resolve,reject)=>{
+		// 	sendCustomReq(`${url}`).then(res=>{
+		// 		if(res){
+		// 			if(type === 'catalog'){
+		// 				state.downBookData.bookName = formData.name
+		// 				matchCatalog(res)
+		// 				resolve && resolve()
+		// 			}else {
+		// 				let regexp = new RegExp(state.currentRules2);
+		// 				let text = res;
+		// 				let content = text.match(regexp);
+		// 				console.log(content)
+		// 				state.downBookData.bookContent.push(content?content.groups.content:'')
+		// 				resolve && resolve(res)
+		// 			}
+		// 		}else{
+		// 			reject && reject(false)
+		// 			wx.showToast({
+		// 				title: '诶呀,好疼',
+		// 				icon: 'none',
+		// 				duration: 2000
+		// 			})
+		// 		}
+		// 	}).catch(err=>{
+		// 		console.log(err)
+		// 		reject && reject(false)
+		// 		wx.showToast({
+		// 			title: '请求出错，请重试！',
+		// 			icon: 'none',
+		// 			duration: 2000
+		// 		})
+		// 	})
+		// })
+
+
+
+		sendCustomReq(`${url}`).then(res=>{
+			if(res){
+				if(type === 'catalog'){
+					state.downBookData.bookName = formData.name
+					matchCatalog(res)
+					// resolve && resolve()
+				}else {
+					let regexp = new RegExp(state.currentRules2);
+					let text = res;
+					let content = text.match(regexp);
+					console.log(content)
+					state.downBookData.bookContent.push(content?content.groups.content:'')
+					// resolve && resolve(res)
 				}
-			}).catch(err=>{
-				console.log(err)
-				reject && reject(false)
+			}else{
+				// reject && reject(false)
 				wx.showToast({
-					title: '请求出错，请重试！',
+					title: '诶呀,好疼',
 					icon: 'none',
 					duration: 2000
 				})
+			}
+		}).catch(err=>{
+			console.log(err)
+			// reject && reject(false)
+			wx.showToast({
+				title: '请求出错，请重试！',
+				icon: 'none',
+				duration: 2000
 			})
 		})
 
@@ -197,16 +241,17 @@
 	//轮询获取小说正文
 	const downBookDataMed = async (link)=>{
 		let result = await onSubmit(link,'content')
-		if(result){
-			matchContent(result)
-		}else {
-			wx.showToast({
-				title: '规则匹配出错，请检查规则！',
-				icon: 'none',
-				duration: 2000
-			})
-			throw new Error();
-		}
+		// if(result){
+		// 	matchContent(result)
+		// }else {
+		// 	console.log(7878)
+		// 	wx.showToast({
+		// 		title: '规则匹配出错，请检查规则！',
+		// 		icon: 'none',
+		// 		duration: 2000
+		// 	})
+		// 	throw new Error();
+		// }
 	}
 
 	//匹配小说正文
@@ -214,8 +259,9 @@
 		let regexp = new RegExp(state.currentRules2);
 		let text = res;
 		let content = text.match(regexp);
+		console.log(content)
 		state.downBookData.bookContent.push(content?content.groups.content:'')
-		console.log(state.downBookData)
+		// console.log(state.downBookData)
 	}
 
 	//保存小说到本地
@@ -248,7 +294,7 @@
 	}
 
 	//匹配小说目录
-	const matchCatalog = (res)=>{
+	const matchCatalog = (res) => {
 		let regexp = new RegExp(state.currentRules,'g');
 		let regexp2 = new RegExp(state.currentRules);
 		let catalogArr = [];
@@ -266,10 +312,11 @@
 		}
 		state.downBookData.catalog = catalogArr || []
 		if(state.downBookData.catalog.length){
-			state.downBookData.catalog.slice(0,3).forEach(item=>{
+			state.downBookData.catalog.slice(0,10).forEach(item => {
 				try {
-					console.log(item)
-					downBookDataMed(item.link)
+					// console.log(item)
+					 onSubmit(item.link,'content')
+					// await downBookDataMed(item.link)
 				}catch (e) {
 					throw new Error();
 				}
@@ -277,7 +324,8 @@
 		}else {
 			uni.showToast({title:'规则匹配有误，请检查！'})
 		}
-		// console.log(i[0].match(regexp2))
+		// resultArr.forEach(item=>{matchContent(item)})
+		// console.log(resultArr)
 	}
 
 	//保存小说规则

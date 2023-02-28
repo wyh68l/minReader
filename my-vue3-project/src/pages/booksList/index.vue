@@ -10,6 +10,7 @@
 	import {getDemo} from '@/serves/main'
 	import { reactive,onMounted,watch } from "vue";
 	import { useRoute  } from "vue-router";
+	import { onShow} from '@dcloudio/uni-app';
 	// const count: Ref<number> = ref(0);
 	const state = reactive({
 		title: 'Hello',
@@ -18,16 +19,20 @@
 		bookList:[]
 	})
 	// const route = useRoute()
-	const route = getCurrentPages()
-	const curRoute = route[route.length - 1].route
+	// const route = getCurrentPages()
+	// const curRoute = route[route.length - 1].route
 
-	onMounted(() => {
+	// onMounted(() => {
+	// 	getRulesList();
+	// })
+	onShow(() => {
 		getRulesList();
 	})
-	watch(()=>curRoute,() =>{
-		//当页面返回时重新加载规则列表
-		getRulesList();
-	})
+
+	// watch(()=>curRoute,() =>{
+	// 	//当页面返回时重新加载规则列表
+	// 	getRulesList();
+	// })
 
 	const getRulesList = ()=>{
 		state.bookList = uni.getStorageSync('booksList')?JSON.parse(uni.getStorageSync('booksList')):[]

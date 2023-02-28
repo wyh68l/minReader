@@ -18,6 +18,7 @@
 // import {getDemo} from '@/serves/main'
 import { ref, reactive, toRefs, computed, Ref, watchEffect,onMounted,getCurrentInstance } from "vue";
 import mixins from '@/common/js/mixin.ts'
+import { onLoad ,onShow} from '@dcloudio/uni-app';
 
 const state = reactive({
 	animate:false,
@@ -25,7 +26,11 @@ const state = reactive({
 });
 
 onMounted(() => {
-	getRulesList()
+
+})
+onShow(() => {
+	console.log(222)
+	getRulesList();
 })
 
 const getRulesList = ()=>{
@@ -34,6 +39,7 @@ const getRulesList = ()=>{
 const goReadBook = (bookName)=>{
 	uni.navigateTo({url:'../readBookPage/readBookPage?bookName='+bookName})
 }
+
 </script>
 
 <style lang="scss" scoped>
